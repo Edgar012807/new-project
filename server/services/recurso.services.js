@@ -2,32 +2,31 @@ const boom = require('@hapi/boom');
 
 //const pool = require('../libs/postgres.pool');
 const {models} = require('../libs/sequelize');
-class ClienteService {
+class RecursoService {
 
   constructor(){
    /*  this.pool = pool;
     this.pool.on('error',(err) =>console.error(err)); */
   }
 
-  //creacion de cliente
+  //creacion de Recurso
   async create(data){
-   const newCliente = await models.Cliente.create(data);
-    return newCliente;
+   const newRecurso = await models.Recurso.create(data);
+    return newRecurso;
   }
-  //listado de cliente
+  //listado de Recurso
   async find(){
-    const rta = await models.Cliente.findAll();
+    const rta = await models.Recurso.findAll();
     return rta;
 
   }
 
   async findOne(id){
-    const cliente = await models.Cliente.findByPk(id ,{
-      include: ['orden']});
-    if(!cliente){
-      throw boom.notFound('cliente no encontrado');
+    const Recurso = await models.Recurso.findByPk(id);
+    if(!Recurso){
+      throw boom.notFound('Recurso no encontrado');
     }
-    return cliente;
+    return Recurso;
   }
 
   async update(id,changes){
@@ -43,7 +42,7 @@ class ClienteService {
   }
 
 }
-  module.exports = ClienteService;
+  module.exports = RecursoService;
 
 
 

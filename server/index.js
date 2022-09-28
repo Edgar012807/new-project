@@ -1,5 +1,6 @@
 // importacion del modulo express
 const express = require('express');
+const morgan = require('morgan');
 
 
 const app = express();
@@ -8,6 +9,7 @@ const { logErrors, errorHandler, boomErrorHandler,ormErrorHandler } = require('.
 
 //settings
 app.use(express.json());
+
 app.set('port', process.env.PORT ||3006);
 
 //routes
@@ -15,7 +17,9 @@ app.get('/',(req,res)=>{
   res.send('Hello world');
 })
 
+//middlewares
 
+app.use(morgan('dev'));
 
 routerApi(app);
 app.use(logErrors);

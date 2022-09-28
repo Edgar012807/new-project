@@ -13,7 +13,12 @@ const ClienteSchema = {
 
 };
 class Cliente extends Model {
-  static associate() {}
+  static associate(models) {
+    this.hasMany(models.Orden,{
+      as:'orden',
+      foreignKey:'clienteClienit'
+    });
+  }
   static config(sequelize) {
     return {
       sequelize,

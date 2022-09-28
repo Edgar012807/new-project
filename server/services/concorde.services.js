@@ -2,7 +2,7 @@ const boom = require('@hapi/boom');
 
 //const pool = require('../libs/postgres.pool');
 const {models} = require('../libs/sequelize');
-class ClienteService {
+class ConcordeService {
 
   constructor(){
    /*  this.pool = pool;
@@ -11,21 +11,22 @@ class ClienteService {
 
   //creacion de cliente
   async create(data){
-   const newCliente = await models.Cliente.create(data);
+   const newCliente = await models.Concorde.create(data);
     return newCliente;
   }
   //listado de cliente
   async find(){
-    const rta = await models.Cliente.findAll();
+    const rta = await models.Concorde.findAll({
+      include:['ordenado']
+    });
     return rta;
 
   }
 
   async findOne(id){
-    const cliente = await models.Cliente.findByPk(id ,{
-      include: ['orden']});
+    const cliente = await models.Concorde.findByPk(id);
     if(!cliente){
-      throw boom.notFound('cliente no encontrado');
+      throw boom.notFound('Concepto x Orden no encontrado');
     }
     return cliente;
   }
@@ -43,7 +44,7 @@ class ClienteService {
   }
 
 }
-  module.exports = ClienteService;
+  module.exports = ConcordeService;
 
 
 
