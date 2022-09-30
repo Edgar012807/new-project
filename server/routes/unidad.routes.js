@@ -11,6 +11,7 @@ const {
   updateUnidadSchema,
   getUnidadSchema,
 } = require('../schemas/unidad.schema');
+const { JSON, json } = require('sequelize');
 
 // utilizar el metodo Router de Express
 const router = express.Router();
@@ -23,7 +24,18 @@ router.get('/', async (req, res, next) => {
   try {
     const unidades = await service.find();
     //res.send('hello world');
-    res.json(unidades);
+    //res.json(unidades);
+    res.render('index.ejs',{unidades})
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/create', async (req, res, next) => {
+  try {
+    const unidades = await service.find();
+    //res.send('hello world');
+    //res.json(unidades);
+    res.render('create.ejs',{unidades:unidades})
   } catch (error) {
     next(error);
   }
@@ -37,6 +49,8 @@ router.get(
       const { unidid } = req.params;
       const unidade = await service.findOne(unidid);
       res.json(unidade);
+
+
     } catch (error) {
       next(error);
     }
@@ -49,9 +63,11 @@ router.post(
     try {
       const body = req.body;
       const newUnidades = await service.create(body);
-      res.status(201).json(newUnidades);
+      res.redirect('/api/v1/unidad');
+     // res.status(201).json(newUnidades);
     } catch (error) {
-      next(error);
+      //next(error);
+      console.log(error);
     }
   }
 );

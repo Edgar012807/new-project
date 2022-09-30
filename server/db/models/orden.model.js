@@ -40,6 +40,10 @@ class Orden extends Model {
       as:'concorde',
       foreignKey:'ordenadoOrdeid'
     })
+    this.hasMany(models.Servicio,{
+      as:'servi',
+      foreignKey:'ordenOrdeid'
+    })
 
   }
   static config(sequelize) {

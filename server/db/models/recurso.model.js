@@ -8,12 +8,17 @@ const RecursoSchema = {
     type: DataTypes.INTEGER,
   },
   recunomb: { allowNull: false, type: DataTypes.STRING(100) },
-  recusuho: { allowNull: false, type: DataTypes.INTEGER(15), defaultValue: 0},
-  recuvanu: { allowNull: false, type: DataTypes.INTEGER(15) },
-  recutoco: { allowNull: false, type: DataTypes.INTEGER(15) },
+  recusuho: { allowNull: false, type: DataTypes.INTEGER, defaultValue: 0},
+  recuvanu: { allowNull: false, type: DataTypes.INTEGER },
+  recutoco: { allowNull: false, type: DataTypes.INTEGER },
 };
 class Recurso extends Model {
-  static associate() {}
+  static associate(models) {
+    this.hasMany(models.Servicio,{
+      as:'see',
+      foreignKey:'recuRecucodi',
+    })
+  }
   static config(sequelize) {
     return {
       sequelize,

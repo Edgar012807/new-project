@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const {ORDEN_TABLE} = require('../models/orden.model');
+const {UNIDAD_TABLE} = require('../models/unidad.model');
 const CONCORDE_TABLE = 'concorde';
 const ConcordeSchema = {
   coorid: {
@@ -26,7 +27,17 @@ const ConcordeSchema = {
 
 
   },
-  coorunid: { allowNull: true, type: DataTypes.INTEGER},
+  coorUnidid: {
+    field:'coorunid',
+    allowNull: false,
+    type: DataTypes.INTEGER,
+    references:{
+      model:UNIDAD_TABLE,
+      key:'unidid'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
 
 };
 class Concorde extends Model {
@@ -34,6 +45,22 @@ class Concorde extends Model {
     this.belongsTo(models.Orden,{
       as:'ordenado'
     });
+    this.belongsTo(models.Unidad,{
+      as:'coor'
+    });
+    this.hasMany(models.Taorcora,{
+      as:'taord',
+      foreignKey:'torcCoorid'
+    });
+    this.hasMany(models.Vitacora,{
+      as:'vitarc',
+      foreignKey:'vrtcCoorid'
+    })
+    this.hasMany(models.Servicio,{
+      as:'ser',
+      foreignKey:'conCoorid'
+    })
+
   }
   static config(sequelize) {
     return {

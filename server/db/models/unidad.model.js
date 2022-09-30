@@ -18,7 +18,16 @@ const UnidadSchema = {
   }, */
 };
 class Unidad extends Model {
-  static associate() {}
+  static associate(models) {
+    this.hasMany(models.Concorde,{
+      as:'concor',
+      foreignKey:'coorUnidid'
+    })
+    this.hasMany(models.Servicio,{
+      as:'serv',
+      foreignKey:'uniUnidid'
+    })
+  }
   static config(sequelize) {
     return {
       sequelize,

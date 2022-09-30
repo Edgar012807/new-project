@@ -2,29 +2,27 @@
 const express = require('express');
 
 // importacion de los servvcios
-const RecursoService = require('../services/recurso.services');
+const ServicioService = require('../services/servicio.services');
 // importacion de las validaciones
 const validatorHandler = require('../middlewares/validator.handler');
 //importacion de los schemas definidos
 const {
-  createRecursoSchema,
-  updateRecursoSchema,
-  getRecursoSchema,
-} = require('../schemas/recurso.schemas');
+  createServicioSchema,
+  updateServicioSchema,
+  getServicioSchema,
+} = require('../schemas/servicio.schemas');
 
 // utilizar el metodo Router de Express
 const router = express.Router();
 
 // creacion de la Instancia de la clase UnidadService
-const service = new RecursoService();
+const service = new ServicioService();
 
 // routas
 router.get('/', async (req, res, next) => {
   try {
     const recursos = await service.find();
     res.json(recursos);
-
-
   } catch (error) {
     next(error);
   }
@@ -32,7 +30,7 @@ router.get('/', async (req, res, next) => {
 
 router.get(
   '/:recucodi',
-  validatorHandler(getRecursoSchema, 'params'),
+  validatorHandler(getServicioSchema, 'params'),
   async (req, res, next) => {
     try {
       const { recucodi } = req.params;
@@ -45,7 +43,7 @@ router.get(
 );
 router.post(
   '/',
-  validatorHandler(createRecursoSchema, 'body'),
+ validatorHandler(createServicioSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;
@@ -58,8 +56,8 @@ router.post(
 );
 router.patch(
   '/:recucodi',
-  validatorHandler(getRecursoSchema, 'params'),
-  validatorHandler(updateRecursoSchema, 'body'),
+  validatorHandler(getServicioSchema, 'params'),
+  validatorHandler(updateServicioSchema, 'body'),
   async (req, res, next) => {
     try {
       const { recucodi } = req.params;
@@ -72,7 +70,7 @@ router.patch(
   }
 );
 router.delete('/:recucodi',
-  validatorHandler(getRecursoSchema, 'params'),
+  validatorHandler(getServicioSchema, 'params'),
   async (req, res, next) => {
     try {
       const { recucodi } = req.params;

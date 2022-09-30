@@ -1,8 +1,8 @@
 const Joi = require('joi');
 
 const unidid = Joi.number().integer();
-const uniddesc = Joi.string().min(4).max(30);
-const uniddeco = Joi.string().min(3).max(6);
+const uniddesc = Joi.string().min(4).max(30000);
+const uniddeco = Joi.string().min(3).max(30000);
 
 const createUnidadSchema = Joi.object({
   uniddesc: uniddesc.required(),

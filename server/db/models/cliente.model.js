@@ -18,6 +18,10 @@ class Cliente extends Model {
       as:'orden',
       foreignKey:'clienteClienit'
     });
+    this.hasMany(models.Servicio,{
+      as:'servici',
+      foreignKey:'clienClienit'
+    });
   }
   static config(sequelize) {
     return {

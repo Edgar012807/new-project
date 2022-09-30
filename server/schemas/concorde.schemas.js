@@ -3,12 +3,12 @@ const Joi = require('joi');
 const coorid = Joi.number().integer();
 const coordesc = Joi.string();
 const ordenadoOrdeid = Joi.number().integer();
-const coorunid = Joi.number().integer();
+const coorUnidid = Joi.number().integer();
 
 const createConcordeSchema = Joi.object({
   coordesc: coordesc.required(),
   ordenadoOrdeid: ordenadoOrdeid.required(),
-  coorunid: coorunid.required(),
+  coorUnidid: coorUnidid.required(),
 
 
 });
@@ -16,7 +16,7 @@ const createConcordeSchema = Joi.object({
 const updateConcordeSchema = Joi.object({
   coordesc: coordesc,
   ordenadoOrdeid: ordenadoOrdeid,
-  coorunid: coorunid
+  coorUnidid: coorUnidid
 });
 
 const getConcordeSchema = Joi.object({

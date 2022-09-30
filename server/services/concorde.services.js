@@ -17,7 +17,7 @@ class ConcordeService {
   //listado de cliente
   async find(){
     const rta = await models.Concorde.findAll({
-      include:['ordenado']
+      include:{all:true}
     });
     return rta;
 
@@ -26,7 +26,7 @@ class ConcordeService {
   async findOne(id){
     const cliente = await models.Concorde.findByPk(id);
     if(!cliente){
-      throw boom.notFound('Concepto x Orden no encontrado');
+      throw boom.notFound(`Concepto x Orden # ${id} no encontrado `);
     }
     return cliente;
   }
