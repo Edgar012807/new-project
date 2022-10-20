@@ -21,9 +21,24 @@ const service = new TaorcoraService();
 // routas
 router.get('/', async (req, res, next) => {
   try {
-    const taorcora = await service.find();
+
+    const taorcora = await service.find(req.query);
+    const conorden = await service.findOrden();
+    //res.send('hello world');
+    //res.json(taorcora);
+    res.render('taorcora.ejs',{taorcora,conorden})
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/datos', async (req, res, next) => {
+  try {
+
+    const taorcora = await service.find(req.query);
+    const conorden = await service.findOrden();
     //res.send('hello world');
     res.json(taorcora);
+    //res.render('taorcora.ejs',{taorcora,conorden})
   } catch (error) {
     next(error);
   }

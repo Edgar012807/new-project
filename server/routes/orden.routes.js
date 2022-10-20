@@ -12,7 +12,6 @@ const {
   getOrdenSchema,
   getFecha
 } = require('../schemas/orden.schema');
-const { func } = require('joi');
 
 // utilizar el metodo Router de Express
 const router = express.Router();
@@ -24,12 +23,51 @@ const service = new OrdenService();
 router.get('/', async (req, res, next) => {
   try {
     const orden = await service.find();
+    const cliente = await service.findCliente();
     //res.send('hello world');
-    res.json(orden);
+    res.render('orden.ejs', {orden,cliente})
+    // res.json(orden);
   } catch (error) {
     next(error);
   }
 });
+router.get('/create', async (req, res, next) => {
+  try {
+    const orden = await service.find();
+    const cliente = await service.findCliente();
+    //res.send('hello world');
+    res.render('create_orden.ejs', {orden,cliente})
+    //res.json(orden);
+  } catch (error) {
+
+    next(error);
+  }
+});
+
+router.get(
+  '/conceptos/:id',
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const vitaConcepto = await service.findClienteOrden(id);
+      res.json(vitaConcepto)
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+router.get(
+  '/concept/:id',
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const vitaConcepto = await service.findClienteOrdena(id);
+      res.json(vitaConcepto)
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get(
   '/:ordeid',
@@ -37,13 +75,28 @@ router.get(
   async (req, res, next) => {
     try {
       const { ordeid } = req.params;
-      const unidade = await service.findOne(ordeid);
+      const unidade = await service.findOn(ordeid);
       res.json(unidade);
     } catch (error) {
       next(error);
     }
   }
 );
+
+
+router.get('/edit/:ordeid', async (req, res, next) => {
+  try {
+    const { ordeid } = req.params;
+    //const body = req.body;
+    const clie = await service.findOne(ordeid);
+    //res.send('hello world');
+    res.render('edit_orden.ejs', {clie})
+    //res.json(orden);
+  } catch (error) {
+
+    next(error);
+  }
+});
 router.post(
   '/',
   validatorHandler(createOrdenSchema, 'body'),
@@ -56,7 +109,8 @@ router.post(
       }
 
       const newUnidades = await service.create(body);
-      res.status(201).json(newUnidades);
+      //res.status(201).json(newUnidades);
+      res.redirect('/api/v1/orden');
     } catch (error) {
       next(error);
     }
@@ -68,6 +122,7 @@ router.patch(
   validatorHandler(updateOrdenSchema, 'body'),
   async (req, res, next) => {
     try {
+      console.log('que paso');
       const { ordeid } = req.params;
       const body = req.body;
       const cliente = await service.update(ordeid, body);

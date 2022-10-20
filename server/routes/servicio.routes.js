@@ -21,8 +21,21 @@ const service = new ServicioService();
 // routas
 router.get('/', async (req, res, next) => {
   try {
+    const servicios = await service.find();
+    //res.json(servicios);
+    res.render("listadoServicio.ejs",{servicios});
+  } catch (error) {
+    next(error);
+  }
+});
+router.get('/create', async (req, res, next) => {
+  try {
     const recursos = await service.find();
-    res.json(recursos);
+    const cliente = await service.findClient();
+    const recurso = await service.findRecurso();
+   // res.json(recursos);
+   res.render("servicios.ejs",{cliente,recurso})
+
   } catch (error) {
     next(error);
   }

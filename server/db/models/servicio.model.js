@@ -74,7 +74,15 @@ const ServicioSchema = {
     type: DataTypes.BIGINT(6),
   },
   servvalo: {
-    allowNull: false,
+    allowNull: true,
+    type: DataTypes.BIGINT(15),
+  },
+  servano:{
+    allowNull: true,
+    type: DataTypes.BIGINT(15),
+  },
+  servmes:{
+    allowNull: true,
     type: DataTypes.BIGINT(15),
   },
   servmoda: {
@@ -83,7 +91,7 @@ const ServicioSchema = {
     defaultValue: 'N'
   },
   servcost: {
-    allowNull: false,
+    allowNull: true,
     type: DataTypes.BIGINT(15),
   },
   servesta: {

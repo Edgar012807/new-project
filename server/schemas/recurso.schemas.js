@@ -3,8 +3,8 @@ const Joi = require('joi');
 const recucodi = Joi.number().integer();
 const recunomb = Joi.string().min(4).max(30);
 const recusuho = Joi.number().integer();
-const recuvanu = Joi.number().integer().min(1).max(15);
-const recutoco = Joi.number().integer().min(1).max(15);
+const recuvanu = Joi.number().integer();
+const recutoco = Joi.number().integer();
 
 const createRecursoSchema = Joi.object({
   recunomb: recunomb.required(),

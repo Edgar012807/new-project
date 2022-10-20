@@ -10,6 +10,7 @@ const {
   createConcordeSchema,
   updateConcordeSchema,
   getConcordeSchema,
+  queryConcordeSchema
 } = require('../schemas/concorde.schemas');
 
 // utilizar el metodo Router de Express
@@ -19,13 +20,19 @@ const router = express.Router();
 const service = new ConcordeService();
 
 // routas
-router.get('/', async (req, res, next) => {
+router.get('/',
+validatorHandler(queryConcordeSchema, 'query'),
+async (req, res, next) => {
   try {
-    const concorde = await service.find();
+    console.log('errerrer')
+    const concorde = await service.find(req.query);
+    const conorden = await service.findOrden();
+    const conunidad = await service.findUnidad();
     //res.send('hello world');
-    res.json(concorde);
+    // res.json(concorde);
+    res.render('concorde.ejs',{concorde,conorden,conunidad})
   } catch (error) {
-    next(error);
+    //next(error);
   }
 });
 
@@ -42,25 +49,31 @@ router.get(
     }
   }
 );
+
+
 router.post(
   '/',
   validatorHandler(createConcordeSchema, 'body'),
   async (req, res, next) => {
     try {
+      console.log('eeeeoh')
       const body = req.body;
       const newUnidades = await service.create(body);
       res.status(201).json(newUnidades);
+      //console.log('pello');
+      //res.redirect('/api/v1/cliente')
     } catch (error) {
       next(error);
     }
   }
 );
 router.patch(
-  '/:clienit',
+  '/:coorid',
   validatorHandler(getConcordeSchema, 'params'),
   validatorHandler(updateConcordeSchema, 'body'),
   async (req, res, next) => {
     try {
+      console.log('cantaera')
       const { coorid } = req.params;
       const body = req.body;
       const concepto = await service.update(coorid, body);

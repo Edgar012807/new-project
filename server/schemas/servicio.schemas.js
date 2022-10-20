@@ -1,48 +1,54 @@
 
 const Joi = require('joi');
 
-const servclie = Joi.number().integer();
-const servorde = Joi.number().integer();
-const servconc = Joi.number().integer();
-const servunid = Joi.number().integer();
+const clienClienit = Joi.number().integer();
+const ordenOrdeid = Joi.number().integer();
+const conCoorid = Joi.number().integer();
+const uniUnidid = Joi.number().integer();
 const servfech = Joi.date()
-const servrecu = Joi.number().integer();
+const recuRecucodi = Joi.number().integer();
 const servcant = Joi.number().integer();
 const servvalo = Joi.number().integer();
 const servmoda = Joi.string();
 const servcost = Joi.number().integer();
 const servesta = Joi.string();
+const servano = Joi.number().integer();
+const servmes = Joi.number().integer();
 
 const createServicioSchema = Joi.object({
-  servclie : Joi.required(),
-  servorde : Joi.required(),
-  servconc : Joi.required(),
-  servunid : Joi.required(),
-  servfech : Joi.required(),
-  servrecu : Joi.required(),
-  servcant : Joi.required(),
-  servvalo : Joi.required(),
-  servmoda : Joi.required(),
-  servcost : Joi.required(),
-  servesta : Joi.required(),
+  clienClienit : clienClienit.required(),
+  ordenOrdeid : ordenOrdeid.required(),
+  conCoorid : conCoorid.required(),
+  uniUnidid : uniUnidid.required(),
+  servfech : servfech.required(),
+  recuRecucodi : recuRecucodi.required(),
+  servcant : servcant.required(),
+  servano:servano,
+  servmes:servmes,
+  servvalo : servvalo,
+  servmoda : servmoda,
+  servcost : servcost,
+  servesta : servesta,
 });
 
 const updateServicioSchema = Joi.object({
-  servclie : servclie ,
-  servorde : servorde,
-  servconc : servconc,
-  servunid : servunid,
+  clienClienit : clienClienit ,
+  ordenOrdeid : ordenOrdeid,
+  conCoorid : conCoorid,
+  uniUnidid : uniUnidid,
   servfech : servfech,
-  servrecu : servrecu,
+  recuRecucodi : recuRecucodi,
   servcant : servcant,
   servvalo : servvalo ,
   servmoda : servmoda ,
   servcost : servcost,
   servesta : servesta,
+  servano:servano,
+  servmes:servmes,
 });
 
 const getServicioSchema = Joi.object({
-  servclie: servclie.required(),
+  clienClienit: clienClienit.required(),
 });
 
 module.exports = {

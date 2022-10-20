@@ -15,8 +15,15 @@ class UnidadService {
     return nwUnid;
   }
 
-  async find(){
-    const rta = await models.Unidad.findAll();
+  async find(query){
+    const opciones = {
+    }
+    const {limit , offset} = query;
+    if (limit && offset){
+      opciones.limit = limit,
+      opciones.offset = offset
+    }
+    const rta = await models.Unidad.findAll(opciones);
     return rta;
 
   }

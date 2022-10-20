@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const ejs = require('ejs');
+const path = require('path');
 
 const app = express();
 const routerApi = require('./routes')
@@ -14,7 +15,7 @@ app.set('view engine' ,'ejs')
 app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 
-app.set('port', process.env.PORT ||3006);
+app.set('port', process.env.PORT ||3009);
 
 //routes
 app.get('/',(req,res)=>{
@@ -31,6 +32,8 @@ app.use(ormErrorHandler);
 app.use(boomErrorHandler);
 app.use(errorHandler);
 
+
+app.use(express.static(path.join(__dirname,'public')))
 
 // start
 app.listen(app.get('port'),()=>{

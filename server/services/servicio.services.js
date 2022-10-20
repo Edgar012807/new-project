@@ -2,7 +2,8 @@
 const boom = require('@hapi/boom');
 
 //const pool = require('../libs/postgres.pool');
-const {models} = require('../libs/sequelize');
+const {models } = require('../libs/sequelize');
+const sequelize = require('../libs/sequelize');
 class ServicioService {
 
   constructor(){
@@ -17,7 +18,19 @@ class ServicioService {
   }
   //listado de Recurso
   async find(){
-    const rta = await models.Servicio.findAll();
+    const rta = await models.Servicio.findAll({
+      include:['clien']
+    });
+    return rta;
+
+  }
+  async findClient(){
+    const rta = await models.Cliente.findAll();
+    return rta;
+
+  }
+  async findRecurso(){
+    const rta = await models.Recurso.findAll();
     return rta;
 
   }

@@ -21,10 +21,9 @@ const service = new RecursoService();
 // routas
 router.get('/', async (req, res, next) => {
   try {
-    const recursos = await service.find();
-    res.json(recursos);
-
-
+    const recursos = await service.find(req.query);
+   // res.json(recursos);
+    res.render('recurso.ejs',{recursos})
   } catch (error) {
     next(error);
   }

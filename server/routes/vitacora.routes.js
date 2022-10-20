@@ -21,13 +21,28 @@ const service = new VitacoraService();
 // routas
 router.get('/', async (req, res, next) => {
   try {
-    const unidades = await service.find();
+    const vitacora = await service.find(req.query);
+    const conorden = await service.findOrden();
     //res.send('hello world');
-    res.json(unidades);
+    //res.json(vitacora);
+    res.render('vitacora.ejs',{vitacora,conorden})
   } catch (error) {
     next(error);
   }
 });
+router.get(
+  '/conceptos/:id',
+  //validatorHandler(getVitacoraSchema, 'params'),
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const vitaConcepto = await service.findConcepto(id);
+      res.json(vitaConcepto)
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 router.get(
   '/:vrtcCoorid',
@@ -42,6 +57,7 @@ router.get(
     }
   }
 );
+
 router.post(
   '/',
   validatorHandler(createVitacoraSchema, 'body'),

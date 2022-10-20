@@ -21,7 +21,7 @@ const updateVitacoraSchema = Joi.object({
 });
 
 const getVitacoraSchema = Joi.object({
-  vrtcCoorid: vrtcCoorid.required(),
+  vrtcCoorid: vrtcCoorid,
 });
 
 module.exports = {

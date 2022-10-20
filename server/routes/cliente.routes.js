@@ -23,7 +23,8 @@ router.get('/', async (req, res, next) => {
   try {
     const clientes = await service.find();
     //res.send('hello world');
-    res.json(clientes);
+    //res.json(clientes);
+    res.render('cliente.ejs',{clientes});
   } catch (error) {
     next(error);
   }
@@ -50,12 +51,13 @@ router.post(
       const body = req.body;
       const newUnidades = await service.create(body);
       res.status(201).json(newUnidades);
+      //res.redirect('/api/v1/cliente')
     } catch (error) {
       next(error);
     }
   }
 );
-router.patch(
+router.put(
   '/:clienit',
   validatorHandler(getClienteSchema, 'params'),
   validatorHandler(updateClienteSchema, 'body'),

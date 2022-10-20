@@ -15,10 +15,25 @@ class TaorcoraService {
     return newCliente;
   }
   //listado de cliente
-  async find(){
-    const rta = await models.Taorcora.findAll({
+  async find(query){
+    const options = {
+      include:[{
+        model:models.Concorde,
+        as:"torc",
+        include:[{
+          model:models.Orden,
+          as:'ordenado'
+        }]
+      }],
+      where:{}
+    }
+    const {concepto} = query
+    if(concepto){
+      options.where.torcCoorid = concepto;
+    }
+    const rta = await models.Taorcora.findAll(/* {
       include:['torc']
-    });
+    } */ options);
     return rta;
 
   }
@@ -29,6 +44,11 @@ class TaorcoraService {
       throw boom.notFound('TARIFA X ORDEN X CONCEPTO X RANGO No Encontrada');
     }
     return taorcora;
+  }
+  async findOrden(){
+    const rta = await models.Orden.findAll();
+    return rta;
+
   }
 
   async update(id,changes){

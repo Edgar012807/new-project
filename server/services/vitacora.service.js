@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const { Vitacora } = require('../db/models/vitacora.model');
 
 //const pool = require('../libs/postgres.pool');
 const {models} = require('../libs/sequelize');
@@ -15,20 +16,43 @@ class VitacoraService {
     return newCliente;
   }
   //listado de cliente
-  async find(){
-    const rta = await models.Vitacora.findAll({
-      include:['vrtc']
-    });
+  async find(query){
+    const options = {
+      include:[{
+        model:models.Concorde,
+        as:"vrtc",
+        include:[{
+          model:models.Orden,
+          as:'ordenado'
+        }]
+      }],
+      where:{}
+    }
+    const {concepto} = query
+    if(concepto){
+      options.where.vrtcCoorid = concepto;
+    }
+    const rta = await models.Vitacora.findAll(options);
     return rta;
 
   }
 
   async findOne(id){
-    const cliente = await models.Vitacora.findByPk(id );
+    const cliente = await models.Vitacora.findByPk(id);
     if(!cliente){
       throw boom.notFound('cliente no encontrado');
     }
     return cliente;
+  }
+  async findConcepto(id){
+    const concepto = await models.Concorde.findAll({
+      where:{
+        ordenadoOrdeid:id
+      }
+    })
+
+    return concepto
+
   }
 
   async update(id,changes){
@@ -42,7 +66,11 @@ class VitacoraService {
     await uni.destroy();
     return {id};
   }
+  async findOrden(){
+    const rta = await models.Orden.findAll();
+    return rta;
 
+  }
 }
   module.exports = VitacoraService;
 

@@ -5,6 +5,7 @@ function validatorHandler(schema, property) {
     const data = req[property];
     const { error } = schema.validate(data, { abortEarly: false });
     if (error) {
+      //res.render('orden.ejs',{error})
       next(boom.badRequest(error));
     }
     next();

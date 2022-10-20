@@ -10,9 +10,8 @@ const {
   createUnidadSchema,
   updateUnidadSchema,
   getUnidadSchema,
+  queryUnidadSchema
 } = require('../schemas/unidad.schema');
-const { JSON, json } = require('sequelize');
-
 // utilizar el metodo Router de Express
 const router = express.Router();
 
@@ -20,27 +19,28 @@ const router = express.Router();
 const service = new UnidadService();
 
 // routas
-router.get('/', async (req, res, next) => {
+router.get('/',
+  validatorHandler(queryUnidadSchema, 'query'),
+  async (req, res, next) => {
+    try {
+      const unidades = await service.find(req.query);
+      //res.send('hello world');
+      //res.json(unidades);
+      res.render('unidad.ejs',{unidades})
+    } catch (error) {
+      next(error);
+    }
+  });
+/* router.get('/create', async (req, res, next) => {
   try {
-    const unidades = await service.find();
+   // const unidades = await service.find();
     //res.send('hello world');
     //res.json(unidades);
-    res.render('index.ejs',{unidades})
+    res.render('create.ejs')
   } catch (error) {
-    next(error);
+   next(error)
   }
-});
-router.get('/create', async (req, res, next) => {
-  try {
-    const unidades = await service.find();
-    //res.send('hello world');
-    //res.json(unidades);
-    res.render('create.ejs',{unidades:unidades})
-  } catch (error) {
-    next(error);
-  }
-});
-
+}); */
 router.get(
   '/:unidid',
   validatorHandler(getUnidadSchema, 'params'),
@@ -49,8 +49,6 @@ router.get(
       const { unidid } = req.params;
       const unidade = await service.findOne(unidid);
       res.json(unidade);
-
-
     } catch (error) {
       next(error);
     }
@@ -58,16 +56,17 @@ router.get(
 );
 router.post(
   '/',
-  validatorHandler(createUnidadSchema, 'body'),
+  //validatorHandler(createUnidadSchema, 'body'),
   async (req, res, next) => {
     try {
       const body = req.body;
+      console.log(body);
       const newUnidades = await service.create(body);
-      res.redirect('/api/v1/unidad');
-     // res.status(201).json(newUnidades);
+      //res.redirect('/api/v1/unidad');
+      res.status(201).json(newUnidades);
     } catch (error) {
-      //next(error);
-      console.log(error);
+      next(error);
+     /* res.redirect('casa'); */
     }
   }
 );

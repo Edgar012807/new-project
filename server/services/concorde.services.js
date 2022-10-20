@@ -11,14 +11,44 @@ class ConcordeService {
 
   //creacion de cliente
   async create(data){
+
+    const {ordenadoOrdeid, coorUnidid } = data ;
+    const clOr = ordenadoOrdeid.split(' ');
+    const clUn = coorUnidid.split(' ');
+    data.ordenadoOrdeid =clOr[0];
+    data.coorUnidid =clUn[0];
    const newCliente = await models.Concorde.create(data);
-    return newCliente;
+
+
+   return newCliente;
   }
   //listado de cliente
-  async find(){
-    const rta = await models.Concorde.findAll({
-      include:{all:true}
+  async find(query){
+
+    const options = {
+      include:['ordenado'],
+      where:{}
+    }
+    const {orden} = query;
+    /* console.log(orden); */
+    //const ordenObtenida = orden.split(' ');
+    //console.log('casa', ordenObtenida[0]);
+     if (orden){
+      options.where.ordenadoOrdeid = orden;
+    }
+    const rta = await models.Concorde.findAll(options);
+    return rta;
+
+  }
+  async findOrden(){
+    const rta = await models.Orden.findAll({
+      include: ['cliente'],
     });
+    return rta;
+
+  }
+  async findUnidad(){
+    const rta = await models.Unidad.findAll();
     return rta;
 
   }

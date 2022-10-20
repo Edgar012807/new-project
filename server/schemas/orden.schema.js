@@ -4,12 +4,12 @@ const ordeid = Joi.number().integer();
 const ordenume = Joi.string();
 const ordedesc = Joi.string();
 const ordeobje = Joi.string();
-const ordefere = Joi.date().greater('now');
-const clienteClienit = Joi.number().integer();
-const ordefein = Joi.date().greater('now');
-const ordefefi = Joi.date().greater('now');
-const ordevato = Joi.number().integer();
-const ordeveje = Joi.number().integer();
+const ordefere = Joi.date().less('now');
+const clienteClienit = Joi.string(); //number().integer()
+const ordefein = Joi.date()
+const ordefefi = Joi.date()
+const ordevato = Joi.string();//number().integer()
+const ordeveje = Joi.string();//number().integer()
 
 
 
