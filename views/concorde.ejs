@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.rtl.min.css" integrity="sha384-OXTEbYDqaX2ZY/BOaZV/yFGChYHtrXH2nyXJ372n2Y8abBhrqacCEe+3qhSHtLjy" crossorigin="anonymous">
+  <title>Concepto</title>
+</head>
+    <body>
+      <%- include('partials/navigation') %>
+<!--       <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="http://localhost:3007/api/v1/cliente?limit=8&&offset=0">1</a></li>
+           <li class="page-item"><a class="page-link" href="http://localhost:3006/api/v1/unidad?limit=11&&offset=9">2</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next"></a>
+          </li>
+        </ul>
+      </nav> -->
+      <h2 id="numOrden" style="margin-left:50px; display: inline-block;">Orden </h2>
+      <h2 id="clientOrden" style=" margin-left:1250px;  display:inline-block;">Cliente: </h2>
+
+
+    <center><label for="user" class="">ORDEN ASOCIADA</label></center>
+    <center> <select id="orden"  name="or"  class="form-select" style="width: 40%;" aria-labZel="Default select example" tabindex="2" onchange=" ShowSelected();"value="casa">
+      <option value="" hidden > </option>
+      <% conorden.forEach((clientes)=> {%>
+
+        <option ><%- `${clientes.ordeid} ${clientes.ordedesc}` %></option>
+      <% }) %>
+       </select></center>
+        <button class="btn btn-outline-info" style="margin-left: 310px; margin-bottom: 8px;" data-bs-toggle="modal" data-bs-target="#nimodal"><i class="fa-solid fa-plus"></i></button>
+<br>
+  <div class="container">
+        <table style="position: relative;bottom: 55px;" class="table table-hover table-bordered-primary table-striped text-center mt-5 position">
+          <thead class =>
+            <tr class="bg-primary text-white">
+              <th scope="col">ID</th>
+              <th scope="col">DESCRIPCION DEL CONCEPTO</th>
+              <th scope="col">Orden Asociada</th>
+              <th  scope="col">UNIDAD ASOCIADA </th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+           <!--  <tr>
+              <form action="/api/v1/concorde" method="POST" class="formulario" >
+                <td style="padding: 12px;"></td>
+                <td style="padding: 12px;"> <input class="form-control" type="text" name="coordesc" id="coordesc" placeholder="creacion descripcion"></td>
+                <td style="padding: 12px;">
+                  <select id="ordenadoOrde"  name="ordenadoOrdeid"  class="form-select"  aria-label="Default select example" tabindex="2">
+                    <option> </option>
+                  <% conorden.forEach((clientes)=> {%>
+
+                    <option ><%- `${clientes.ordeid} ${clientes.ordedesc} ` %></option>
+                  <% }) %>
+
+                   </select>
+                  </td>
+                <td style="padding: 12px;">
+                  <select id="coorUnidid"  name="coorUnidid"  class="form-select" aria-label="Default select example" tabindex="2" >
+                    <option> </option>
+                    <% conunidad.forEach((clientes)=> {%>
+                     <option  ><%- `${clientes.unidid} ${clientes.uniddesc} ` %></option>
+                   <% }) %>
+                   </select>
+                  </td>
+                <td><button id="btnHuardar" class="btn btn-outline-info">Guardar</button></td>
+              </form>
+            </tr> -->
+            <% concorde.forEach((corde)=> {%>
+            <tr>
+              <td style="padding: 12px;"><%= corde.coorid %></td>
+              <td style="padding: 12px;"><%= corde.coordesc %></td>
+              <td style="padding: 12px;"><%= corde.ordenadoOrdeid %></td>
+              <td style="padding: 12px;"><%= corde.coorUnidid %></td>
+              <td>
+              <a  class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modal_edit" title="Editar"><i class="fa-solid fa-pencil"></i></a>
+              <a  class="btn btn-outline-danger">Delete</a>
+            </td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+      </div>
+  <!--     modal crear -->
+      <div class="modal" tabindex="-1" id="nimodal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Modal title</h5>
+            </div>
+            <div class="modal-body">
+              <div style="background-color: red; display: flex; width: 10%;">
+                <span id="err"></span>
+              </div>
+              <form id="dcformulario" >
+                  <label for="coordesc" class="form-label">Descripcion</label>
+                  <input class="form-control" type="text"  id="coordesc"  name="coordesc" required>
+                  <label for="coorUnidid" class="form-label">Unidad</label>
+                  <select id="coorUnidid"   class="form-select" aria-label="Default select example" tabindex="2" >
+                    <option hidden> </option>
+                    <% conunidad.forEach((clientes)=> {%>
+                     <option  ><%- `${clientes.unidid} ${clientes.uniddesc} ` %></option>
+                   <% }) %>
+                   </select>
+                   <div class="mb-3">
+                  </div>
+                  <button  id="btnCliente" class="btn btn-primary" tabindex="5" >Guardar</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+
+      <script src="https://kit.fontawesome.com/aa384fa16a.js" crossorigin="anonymous"></script>
+     <script>
+
+        document.addEventListener('DOMContentLoaded',obtnerCliente,false);
+        const formulario = document.getElementById('dcformulario');
+
+
+/*         document.addEventListener('DOMContentLoaded',navigator,false);
+        document.addEventListener('hashchange',navigator,false); */
+        const selectOrden = document.getElementById('orden');
+        const selecUnidad = document.getElementById('coorUnidid');
+        const numOrden = document.getElementById('numOrden');
+        const clienteOrd = document.getElementById('clientOrden');
+        const btnGuardar = document.getElementById('numOrden');
+
+        function ShowSelected(){
+          //perrro revisa esto
+          const selecte = selectOrden.options[selectOrden.selectedIndex].text
+          console.log("casa", selecte);
+          const [ordenes , _ ] = selecte.split(' ')
+          location.href =`/api/v1/concorde?orden=${ordenes}`  ;
+          console.log( selecte);
+          const sa = parseInt(location.search);
+
+          local('selecionOrdenes' ,selecte);
+
+        }
+          const str = location.search;
+          const [num] = str.match(/(\d+)/);
+
+          formulario.addEventListener('submit',(e)=>{
+          e.preventDefault();
+          createConcorde();
+          formulario.reset();
+          location.href =`/api/v1/concorde?orden=${num}`
+
+
+        })
+          //const [num,_] =['2'];
+          function local(attribute,value=null){
+                if(value)
+                    return sessionStorage.setItem(attribute,value);
+                return sessionStorage.getItem(attribute);
+          }
+          selectOrden.value=local('selecionOrdenes')
+
+          if (num == 0){
+           numOrden.innerHTML='Orden'
+           selectOrden.value = ' '
+           clienteOrd.innerHTML = ' '
+          }else{
+            numOrden.innerHTML+=num;
+
+           }
+          // }
+
+          const url = 'http://localhost:3009/api/v1/concorde';
+
+          async function createConcorde(){
+            try {
+              const form = document.getElementById('dcformulario');
+            const newConcepto = new FormData(form);
+            const descripcion= newConcepto.get('coordesc');
+            const unidad = selecUnidad.options[selectOrden.selectedIndex].text
+              console.log(unidad);
+              const dat = {
+                coordesc: descripcion,
+                ordenadoOrdeid:num,
+                coorUnidid:unidad,
+              };
+                const res = await fetch(url, {
+                method: 'POST', // or 'PUT'
+                headers:{
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dat),
+              })
+              const data = await res.json();
+              console.log(data);
+
+
+            if (res.status !== 201){
+                const span = document.getElementById('err');
+                span.innerHTML=`el code es ${res.status} mensaje ${data.message}`
+              }
+
+            } catch (error) {
+              console.log(error)
+            }
+
+
+        }
+        const urlCliente = (id)=> `http://localhost:3010/api/v1/orden/${id}`;
+
+        async function obtnerCliente(){
+          const res = await fetch(urlCliente(num))
+          const data = await res.json();
+          console.log('casa');
+          console.log(data.cliente.clienomb);
+          clienteOrd.innerHTML += data.cliente.clienomb;
+        }
+
+        //btnGuardar.addEventListener('click',createConcorde);
+      </script>
+
+
+</body>
+</html>

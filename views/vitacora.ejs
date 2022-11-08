@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.rtl.min.css"
+      integrity="sha384-OXTEbYDqaX2ZY/BOaZV/yFGChYHtrXH2nyXJ372n2Y8abBhrqacCEe+3qhSHtLjy"
+      crossorigin="anonymous"
+    />
+    <title>Vigencia</title>
+  </head>
+  <body>
+    <%- include('partials/navigation') %>
+    <!-- <h2 >Concepto Por Orden </h2> -->
+
+    <h6
+      id="numOrden"
+      style="
+        margin-left: 20px;
+        border-bottom: 1px solid rgba(63, 63, 63, 0.226);
+        display: inline-block;
+        font-size: 21px;
+        position: relative;
+        left: 320px;
+        top: 70px;
+      "
+    >
+      Concepto Por Orden
+    </h6>
+
+    <div
+      class="card"
+      style="
+        margin: 20px;
+        width: 160px;
+        display: flex;
+        align-content: center;
+        position: relative;
+        left: 65%;
+      "
+    >
+      <div class="card-body">
+        <p id="clientOrden"></p>
+      </div>
+    </div>
+
+    <center>
+      <label for="user" class=""><strong>Orden Asociada</strong> </label>
+    </center>
+    <center>
+      <select
+        id="orden"
+        name="or"
+        class="form-select form-select-lg mb-3"
+        style="width: 20%"
+        aria-labZel="Default select example"
+        tabindex="2"
+        onchange=" showConceptos();"
+        value="casa"
+      >
+        <option value="" hidden></option>
+        <% conorden.forEach((clientes)=> {%>
+        <option><%- `${clientes.ordeid} ${clientes.ordedesc}` %></option>
+        <% }) %>
+      </select>
+    </center>
+
+    <br />
+
+    <center>
+      <label for="user" class="">Concepto asociado de la orden</label>
+    </center>
+    <center>
+      <select
+        id="conceptual"
+        name="or"
+        style="width: 20%"
+        class="form-select form-select-sm"
+        aria-labZel="Default select example"
+        tabindex="2"
+        onchange=" getSelected();"
+      >
+        <option value="">Selecione la orden</option>
+      </select>
+    </center>
+    <br />
+    <button
+      class="btn btn-primary"
+      style="margin-left: 310px; position: relative; left: 31%"
+      data-bs-toggle="modal"
+      data-bs-target="#nimodal"
+    >
+      Crear Tarifa
+    </button>
+    <div class="container">
+      <br />
+      <br />
+      <table
+        style="position: relative; bottom: 55px"
+        class="table table-hover  table-striped text-center mt-5 position"
+      >
+        <thead>
+          <tr class="bg-primary text-white">
+            <th scope="col">Concepto Asociado a La orden</th>
+            <th scope="col">Rango inicial</th>
+            <th scope="col">Rango final</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% vitacora.forEach((vita)=> {%>
+          <tr>
+            <td style="padding: 12px"><%= vita.vrtcCoorid %></td>
+            <td style="padding: 12px"><%= vita.vtcrain %></td>
+            <td style="padding: 12px"><%= vita.vtcrrafi %></td>
+            <td style="padding: 12px"><%= vita.vtcrvalo %></td>
+            <td>
+              <a
+                class="btn btn-outline-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#modal_edit"
+                ><i class="fa-solid fa-pencil"></i
+              ></a>
+              <a class="btn btn-outline-danger">Delete</a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+    <!--     modal crear -->
+    <div class="modal" tabindex="-1" id="nimodal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Creacion de Tarifa</h5>
+          </div>
+          <div class="modal-body">
+            <div style="background-color: red; display: flex; width: 10%">
+              <span id="err"></span>
+            </div>
+            <form id="dcformulario">
+              <label for="coordesc" class="form-label">Rango Inicial</label>
+              <input
+                class="form-control"
+                type="date"
+                id="rangoInicial"
+                name="rangoInicial"
+                required
+              />
+              <label for="coordesc" class="form-label">Rango Final</label>
+              <input
+                class="form-control"
+                type="date"
+                id="rangoFinal"
+                name="rangoFinal"
+                required
+              />
+              <span id="evento" style="color: red;"></span>
+              <label for="coordesc" class="form-label"> Valor</label>
+              <input
+                class="form-control"
+                type="number"
+                id="valorTarifa"
+                required
+              />
+              <br>
+              <div class="mb-3">
+                <button type="submit" class="btn btn-primary" tabindex="5">
+                  Guardar
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://kit.fontawesome.com/aa384fa16a.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", obtnerCliente, false);
+      const myModal = new bootstrap.Modal('#nimodal', {
+    keyboard: false
+  })
+      const formulario = document.getElementById("dcformulario");
+      const inputs = document.querySelectorAll("#dcformulario input");
+      const selectOrden = document.getElementById("orden");
+      const conceptos = document.getElementById("conceptual");
+      const selecUnidad = document.getElementById("coorUnidid");
+      const numOrden = document.getElementById("numOrden");
+      const clienteOrd = document.getElementById("clientOrden");
+      const btnGuardar = document.getElementById("numOrden");
+      function getSelected() {
+        const conceptos = document.getElementById("conceptual");
+        [id, _] = conceptos.value.split(" ");
+        console.log(id);
+        location.href = `/api/v1/vitacora?concepto=${id}`;
+
+        local("conceptos", id);
+        local("conceptos1", conceptos.value);
+      }
+
+      selectOrden.value = local("ordenes");
+      conceptos.value = local("conceptos1");
+
+      async function showConceptos() {
+        const conceptos = document.getElementById("conceptual");
+        const selectOrden = document.getElementById("orden");
+        var provinciaSeleccionada = selectOrden.value;
+        const [id, _] = provinciaSeleccionada.split(" ");
+        const response = await fetch(
+          `http://localhost:3010/api/v1/vitacora/conceptos/${id}`
+        );
+        const data = await response.json();
+       /*  conceptos.innerHTML =
+          '<option value="">Seleccione un Concepto...</option>'; */
+        local("ordenes", provinciaSeleccionada);
+        if (provinciaSeleccionada !== "") {
+          data.forEach(function (element) {
+            let opcion = document.createElement("option");
+            opcion.value = `${element.ordenadoOrdeid} ${element.coordesc} `;
+            opcion.text = `${element.ordenadoOrdeid} ${element.coordesc} `;
+            conceptos.add(opcion);
+          });
+        }
+      }
+
+      const str = location.search;
+      const [num] = str.match(/(\d+)/);
+
+      const fecha = {
+        status: true,
+      };
+      const validar = (evento) => {
+        switch (evento.target.name) {
+          case "rangoInicial":
+            fecha.inicio = evento.target.value;
+            break;
+          case "rangoFinal":
+            rangoFecha(fecha.inicio, evento.target.value);
+            break;
+          case "text":
+            break;
+        }
+      };
+      inputs.forEach((input) => {
+        input.addEventListener("blur", validar);
+      });
+
+      formulario.addEventListener("submit", (event) => {
+        event.preventDefault();
+        /*  createTraifa();
+          formulario.reset();
+          console.log(num);
+          location.href =`/api/v1/vitacora?concepto=${num}` */
+        /*  if(campos.fecha){
+
+          createServices();
+          formulario.reset();
+        } */
+        console.log(fecha.status);
+        if(fecha.status){
+          createTraifa();
+          formulario.reset();
+          location.href =`/api/v1/vitacora?concepto=${num}`
+            //myModal.hide();
+
+    }
+      });
+
+      //selectOrden.value=local('selecionOrdenes')
+
+      if (num == 0) {
+        numOrden.innerHTML = "Concepto";
+        selectOrden.value = " ";
+        clienteOrd.innerHTML = " ";
+      } else {
+        numOrden.innerHTML += num;
+      }
+
+      function local(attribute, value = null) {
+        if (value) return sessionStorage.setItem(attribute, value);
+        return sessionStorage.getItem(attribute);
+      }
+      //btnGuardar.addEventListener('click',createConcorde);
+      /* const urlCliente = (id)=> ; */
+
+      async function obtnerCliente() {
+        const res = await fetch(`http://localhost:3010/api/v1/orden/${num}`);
+        const data = await res.json();
+        console.log("casa");
+        console.log(data.cliente.clienomb);
+        clienteOrd.innerHTML += data.cliente.clienomb;
+      }
+
+      const url = "http://localhost:3010/api/v1/vitacora";
+      async function createTraifa() {
+        try {
+          const rangoInicial = document.getElementById("rangoInicial").value;
+          const conceptos = document.getElementById("conceptual").value;
+          const rangoFinal = document.getElementById("rangoFinal").value;
+          const valor = document.getElementById("valorTarifa").value;
+          const [conceptoID, _] = conceptos.split(" ");
+          console.log(valor);
+          console.log(rangoFinal);
+          console.log(rangoInicial);
+          console.log(local("conceptos"));
+          const dat = {
+            vrtcCoorid: local("conceptos"),
+            vtcrain: rangoInicial,
+            vtcrrafi: rangoFinal,
+            vtcrvalo: valor,
+          };
+          const res = await fetch(url, {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dat),
+          });
+          const data = await res.json();
+          console.log(data);
+
+          if (res.status !== 201) {
+            const span = document.getElementById("err");
+            span.innerHTML = `el code es ${res.status} mensaje ${data.message} <br> `;
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      function rangoFecha(fechaIncicio, fechaFin) {
+        let cont = 0;
+        const fecha_mod1 = Date.parse(fechaIncicio) / 100000;
+        const fecha_mod2 = Date.parse(fechaFin) / 100000;
+        for (let i = fecha_mod1; i < fecha_mod2; i++) {
+          const element = i;
+          cont++;
+        }
+        if (cont > 25920) {
+          const span = document.getElementById("evento");
+          span.innerHTML= `la fecha es mayor a 30 dias ${fechaFin} <br>`;
+          console.log(`la fecha es mayor a 30 dias ${fechaFin}`);
+          fecha.status = false;
+        } else {
+          fecha.status = true;
+          const span = document.getElementById("evento");
+          span.innerHTML= '';
+        }
+      }
+    </script>
+  </body>
+</html>

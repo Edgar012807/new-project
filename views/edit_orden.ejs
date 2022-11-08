@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Validación de Formulario con Javascript</title>
+	<link rel="stylesheet" href="https://necolas.github.io/normalize.css/8.0.1/normalize.css">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="/estilos.css">
+</head>
+<body>
+	<main>
+    <h2> </h2>
+
+
+
+    <h1 style="display:flex; justify-content:center;">Editar  Orden</h1>
+		<form action="/api/v1/orden/<%= clie.ordeid %>" method="POST" class="formulario">
+			<!-- Grupo: Usuario -->
+			<div class="formulario__grupo" id="grupo__usuario">
+				<label for="ordenume" class="formulario__label">Numero de contrato</label>
+				<div class="formulario__grupo-input">
+					<input type="text" class="formulario__input opaco" name="ordenume" id="ordenume" value="<%= clie.ordenume %>" disabled>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El usuario tiene que ser de 4 a 16 dígitos y solo puede contener numeros, letras y guion bajo.</p>
+			</div>
+
+			<!-- Grupo: Nombre -->
+			<div class="formulario__grupo" id="grupo__nombre">
+				<label for="ordedesc" class="formulario__label">Descripcion Corta</label>
+				<div class="formulario__grupo-input">
+					<input type="text" class="formulario__input" name="ordedesc" id="ordedesc" value="<%= clie.ordedesc %>">
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El usuario tiene que ser de 4 a 16 dígitos y solo puede contener numeros, letras y guion bajo.</p>
+			</div>
+
+			<!-- Grupo: Nombre -->
+			<div class="formulario__grupo" id="grupo__nombre">
+				<label for="ordedesc" class="formulario__label">Descripcion Objeto</label>
+				<div class="formulario__grupo-input">
+					<input type="text" class="formulario__input" name="ordeobje" id="ordeobje" value="<%= clie.ordeobje %>" >
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El usuario tiene que ser de 4 a 16 dígitos y solo puede contener numeros, letras y guion bajo.</p>
+			</div>
+
+			<!-- Grupo: Contraseña -->
+			<div class="formulario__grupo" id="grupo__password">
+				<label for="ordefere" class="formulario__label">Fecha De Recibo</label>
+				<div class="formulario__grupo-input">
+					<input type="date" class="formulario__input opaco" name="ordefere" id="ordefere" value="<%= clie.ordefere %>" disabled>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">La contraseña tiene que ser de 4 a 12 dígitos.</p>
+			</div>
+
+			<!-- Grupo: Contraseña 2 -->
+			<div class="formulario__grupo" id="grupo__password2">
+				<label for="clienteClienit" class="formulario__label">Nit Del cliente</label>
+				<div class="formulario__grupo-input">
+          <select  disabled id="clienteClienit" class="formulario__input opaco" name="clienteClienit"  class="form-select" aria-label="Default select example" tabindex="2" >
+
+               <option   selected><%= clie.clienteClienit %></option>
+
+             </select>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">Ambas contraseñas deben ser iguales.</p>
+			</div>
+
+			<!-- Grupo: Correo Electronico -->
+			<div class="formulario__grupo" id="grupo__correo">
+				<label for="ordefein" class="formulario__label">Fecha Inicio</label>
+				<div class="formulario__grupo-input">
+					<input type="date" class="formulario__input opaco" name="ordefein" id="ordefein" value="<%= clie.ordefein %>" disabled>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El correo solo puede contener letras, numeros, puntos, guiones y guion bajo.</p>
+			</div>
+
+			<!-- Grupo: Teléfono -->
+			<div class="formulario__grupo" id="grupo__telefono">
+				<label for="ordefefi" class="formulario__label">Fecha Final</label>
+				<div class="formulario__grupo-input">
+					<input type="date" class="formulario__input opaco" name="ordefefi" id="ordefefi" value="<%= clie.ordefefi %>" disabled >
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El telefono solo puede contener numeros y el maximo son 14 dígitos.</p>
+			</div>
+			<div class="formulario__grupo" id="grupo__telefono">
+				<label for="ordevato" class="formulario__label">Valor Orden</label>
+				<div class="formulario__grupo-input">
+					<input type="text" class="formulario__input opaco" name="ordevato" id="ordevato"  value="<%= clie.ordevato %>" disabled>
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El telefono solo puede contener numeros y el maximo son 14 dígitos.</p>
+			</div>
+
+<!-- 			<div class="formulario__grupo" id="grupo__telefono">
+				<label for="ordeveje" class="formulario__label">Valor Ejecutado</label>
+				<div class="formulario__grupo-input">
+					<input type="text" class="formulario__input" name="ordeveje" id="ordeveje" value="<%= clie.ordeveje %>">
+					<i class="formulario__validacion-estado fas fa-times-circle"></i>
+				</div>
+				<p class="formulario__input-error">El telefono solo puede contener numeros y el maximo son 14 dígitos.</p>
+			</div> -->
+
+			<div class="formulario__mensaje" id="formulario__mensaje">
+				<p><i class="fas fa-exclamation-triangle"></i> <b>Error:</b> Por favor rellena el formulario correctamente. </p>
+			</div>
+
+			<div class="" style="width: 100%;">
+				<button type="submit" style="position:relative; left:580px" class="formulario__btn" tabindex="5">Guardar</button>
+				<p class="formulario__mensaje-exito" id="formulario__mensaje-exito">Formulario enviado exitosamente!</p>
+			</div>
+
+			<div class="" >
+				<a type="submit"  style="text-decoration: none; padding: 2px 15px 20px 39px; position: relative; left:50px ; " href="/api/v1/orden" class="formulario__btn" >Cancelar</a>
+
+				<p class="formulario__mensaje-exito" id="formulario__mensaje-exito">Formulario enviado exitosamente!</p>
+			</div>
+
+		</form>
+
+	</main>
+</body>
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.rtl.min.css"
+      integrity="sha384-OXTEbYDqaX2ZY/BOaZV/yFGChYHtrXH2nyXJ372n2Y8abBhrqacCEe+3qhSHtLjy"
+      crossorigin="anonymous"
+    />
+    <title>Tarifa</title>
+  </head>
+  <body>
+    <style>
+      table {
+        border: 1px solid black;
+        width: 50%;
+        position: relative;
+        left: 25%;
+
+      }
+    </style>
+    <%- include('partials/navigation') %>
+    <!-- <h2 >Concepto Por Orden </h2> -->
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-start">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+        </li>
+        <li class="page-item-nom"><a class="page-link" href="#">2</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+    <h6
+      id="numOrden"
+      style="
+        margin-left: 20px;
+        border-bottom: 1px solid rgba(63, 63, 63, 0.226);
+        display: inline-block;
+        font-size: 21px;
+        position: relative;
+        left: 320px;
+        top: 70px;
+      ">
+      Concepto Por Orden
+    </h6>
+
+    <div
+      class="card"
+      style="
+        margin: 20px;
+        width: 160px;
+        display: flex;
+        align-content: center;
+        position: relative;
+        left: 65%;
+      "
+    >
+      <div class="card-body">
+        <p id="clientOrden"></p>
+      </div>
+    </div>
+
+    <center>
+      <label for="user" class=""><strong>Orden Asociada</strong> </label>
+    </center>
+    <center>
+      <select
+        id="orden"
+        name="or"
+        class="form-select form-select-lg mb-3"
+        style="width: 20%"
+        aria-labZel="Default select example"
+        tabindex="2"
+        onchange=" showOrdenes();"
+        value="casa"
+      >
+        <option value="Selecione la orden" hidden selected>
+          Selecione la orden
+        </option>
+
+        <% conorden.forEach((clientes)=> {%>
+        <option><%- `${clientes.ordeid} ${clientes.ordedesc}` %></option>
+        <% }) %>
+      </select>
+    </center>
+
+    <center>
+      <label for="user" class="">Concepto asociado de la orden</label>
+    </center>
+    <center>
+      <select
+        id="conceptual"
+        name="or"
+        style="width: 20%"
+        class="form-select form-select-sm"
+        aria-labZel="Default select example"
+        tabindex="2"
+        onchange=" getConcepto();"
+      >
+        <option value="" hidden>Selecione la orden Primero</option>
+      </select>
+    </center>
+    <button
+      class="btn btn-primary"
+      style="margin-left: 310px; position: relative; left: 31%"
+      data-bs-toggle="modal"
+      data-bs-target="#nimodal"
+    >
+      Crear Tarifa
+    </button>
+    <div class="container">
+
+      <!--   <table
+        style="position: relative; bottom: 55px"
+        class="table table-hover table-bordered-primary table-striped text-center mt-5 position"
+      >
+        <thead>
+          <tr class="bg-primary text-white">
+            <th scope="col">Concepto Asociado a La orden</th>
+            <th scope="col">Rango inicial</th>
+            <th scope="col">Rango final</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% taorcora.forEach((taorca)=> {%>
+          <tr>
+            <td style="padding: 12px"><%= taorca.torcCoorid %></td>
+            <td style="padding: 12px"><%= taorca.tocrrain %></td>
+            <td style="padding: 12px"><%= taorca.tocrrafi %></td>
+            <td style="padding: 12px"><%= taorca.tocrvalo %></td>
+            <td>
+              <a
+                class="btn btn-outline-dark"
+                data-bs-toggle="modal"
+                data-bs-target="#modal_edit"
+                ><i class="fa-solid fa-pencil"></i
+              ></a>
+              <a class="btn btn-outline-danger">Delete</a>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table> -->
+    </div>
+
+    <table
+      id="tablero"
+      class="table table-hover table-striped text-center  position w-50"
+    ></table>
+    <!--     modal crear -->
+    <div class="modal" tabindex="-1" id="nimodal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Creacion de Tarifa</h5>
+          </div>
+          <div class="modal-body">
+            <div style="background-color: red; display: flex; width: 10%">
+              <span id="err"></span>
+            </div>
+            <form id="dcFormulario">
+              <label for="coordesc" class="form-label">Rango Inicial</label>
+              <input
+                class="form-control"
+                type="number"
+                id="rangoInicial"
+                name="rangoInicial"
+                required
+              />
+              <span style="color: red" id="errorSpan"></span>
+              <label for="coordesc" class="form-label">Rango Final</label>
+              <input
+                class="form-control"
+                type="number"
+                id="rangoFinal"
+                name="rangoFinal"
+                required
+              />
+              <span style="color: red" id="erSpan"></span>
+              <label for="coordesc" class="form-label"> Valor</label>
+              <input
+                class="form-control"
+                type="number"
+                id="valorTarifa"
+                required
+              />
+              <div class="mb-3"></div>
+              <button class="btn btn-primary" type="submit" tabindex="5">
+                Guardar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Modal editar -->
+     <div class="modal" tabindex="-1" id="modal_edit">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Editar Tarifa</h5>
+          </div>
+          <div class="modal-body">
+            <form id="editTarifaForm">
+              <div class="mb-3">
+                <label for="id" class="form-label">ID</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="idTarifa"
+                  name="idTarifa"
+                  tabindex="1"
+                  readonly="readonly"
+                />
+
+                <label for="coordesc" class="form-label">Rango Inicial</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="rangoInicialEdit"
+                  name="rangoInicialEdit"
+                  required
+                />
+                <span style="color: red" id="errorSpan"></span>
+                <label for="coordesc" class="form-label">Rango Final</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="rangoFinalEdit"
+                  name="rangoFinalEdit"
+                  required
+                />
+                <span style="color: red" id="erSpan"></span>
+                <label for="coordesc" class="form-label"> Valor</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="valorTarifaEdit"
+                  required
+                />
+              <button
+                class="btn btn-primary"
+                tabindex="5"
+                onclick="actualizarCliente()"
+              >
+                Actualizar
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://kit.fontawesome.com/aa384fa16a.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      //DEclracion de Variavles
+      const rangoT = {
+        status: true,
+      };
+      document.addEventListener("DOMContentLoaded", obtnerCliente, false);
+      const myModal = new bootstrap.Modal("#nimodal", {
+        keyboard: false,
+      });
+      const myModalEidt = new bootstrap.Modal("#modal_edit", {
+        keyboard: false,
+      });
+      const formulario = document.getElementById("dcFormulario");
+      const inputs = document.querySelectorAll("#dcFormulario input");
+      const selectOrden = document.getElementById("orden");
+      const conceptos = document.getElementById("conceptual");
+      const selecUnidad = document.getElementById("coorUnidid");
+      const numOrden = document.getElementById("numOrden");
+      const clienteOrd = document.getElementById("clientOrden");
+      const btnGuardar = document.getElementById("numOrden");
+      const tabla = document.getElementById("tablero");
+      const idTarifa = document.querySelector('#idTarifa');
+      const rangoInicialEdit= document.querySelector('#rangoInicialEdit');
+      const rangoFinalEdit = document.querySelector('#rangoFinalEdit');
+      const valorTarifaEdit = document.querySelector('#valorTarifaEdit');
+      const urls = (id)=> `http://localhost:3000/api/v1/taorcora/${id}`;
+      const url = "http://localhost:3000/api/v1/taorcora";
+      const urlAll =(idAll) =>`http://localhost:3000/api/v1/taorcora/lista?concepto=${idAll}`;
+      const formTarifaEdit = document.getElementById('editTarifaForm');
+      const page_item = document.querySelector('.pagination.justify-content-start');
+      const page_i = document.querySelector('.page-item-nom');
+      //Obtencion de Conceptos
+
+      async function getConcepto() {
+        page_item.innerHTML='';
+        const conceptos = document.getElementById("conceptual");
+        [id, _] = conceptos.value.split(" ");
+        const response = await fetch(
+          `http://localhost:3000/api/v1/taorcora/lista?concepto=${id}`
+        );
+        const data = await response.json();
+       /*  if (data.length>5){
+          const resque = await fetch(
+          `http://localhost:3000/api/v1/taorcora/lista?concepto=${id}&&limit=4&&offset=0`
+        );
+        } */
+        // const datable = await resque.json();
+           numOrden.innerHTML = `Concepto ${id}`;
+           let cont =1;
+        const arreglo = [];
+        var heading = document.createElement("li");
+        var hrefe = document.createElement("a");
+        var heading_text = document.createTextNode("<a>cas</a>");
+        data.forEach((ekl) => {
+          arreglo.push(data);
+          heading.appendChild(heading_text)
+        page_item.innerHTML+= `<a class="page-link" href="/api">${cont++}</a>`;
+        });
+        console.log(data.length);
+        rangoT.conceptos = id;
+        rangoT.datos = data;
+        tabla.innerHTML = crearTabla(data);
+        debugger;
+      }
+      //Creacion de tabla
+      function crearTabla(arreglo) {
+        let stringTAble =
+          "<thead><tr class='bg-primary text-white' ><th>ID</th><th scope='col'>Concepto Asociado a la orden</th><th>Rango inicial</th><th>Rango final</th><th>Valor</th> <th>Acciones</th></tr> </thead>";
+
+        for (let iterator of arreglo) {
+          let fila = "<tr > <td>";
+          fila += iterator.tocrid;
+          fila += "</td>";
+          fila += "<td>";
+          fila += iterator.torcCoorid;
+          fila += "</td>";
+          fila += "<td>";
+          fila += iterator.tocrrain;
+          fila += "</td>";
+
+          fila += "<td>";
+          fila += iterator.tocrrafi;
+          fila += "</td>";
+          fila += "<td>";
+          fila += iterator.tocrvalo;
+          fila += "</td>";
+          fila += "<td>";
+          fila +=
+          `<a class='btn btn-outline-info' data-bs-toggle='modal'
+                data-bs-target='#modal_edit'  onclick="obtenerTarifa(${iterator.tocrid})" ><i class='fa-solid fa-pencil'></i></a> `  ;
+          fila += "</td>";
+
+          fila += "</tr>";
+          stringTAble += fila;
+        }
+        return stringTAble;
+      }
+
+      // Ordenes select
+      async function showOrdenes() {
+        const conceptos = document.getElementById("conceptual");
+        const selectOrden = document.getElementById("orden");
+        var provinciaSeleccionada = selectOrden.value;
+        const [id, _] = provinciaSeleccionada.split(" ");
+        const response = await fetch(
+          `http://localhost:3000/api/v1/vitacora/conceptos/${id}`
+        );
+        const data = await response.json();
+        conceptos.innerHTML =
+          '<option value="" hidden>Seleccione un Concepto...</option>';
+        //local("ordenes", provinciaSeleccionada);
+        local("ordenesID", id);
+        if (provinciaSeleccionada !== "") {
+          data.forEach(function (element) {
+            let opcion = document.createElement("option");
+            opcion.value = `${element.coorid} ${element.coordesc} `;
+            opcion.text = `${element.coorid} ${element.coordesc} `;
+            conceptos.add(opcion);
+          });
+        }
+      }
+      //Validacion Rango Inicial
+      async function validaRango(rango) {
+        const response = await fetch(
+          `http://localhost:3000/api/v1/taorcora/datos?concepto=${rangoT.conceptos}`
+        );
+
+        const data = await response.json();
+        const spanErr = document.querySelector("#errorSpan");
+        const jus = document.querySelector("#rangoInicial");
+        //console.log( evento.target.value);
+        console.log(data);
+
+        data.forEach((items) => {
+          //console.log(items.tocrrain)
+          if (rango <= items.tocrrafi) {
+            spanErr.innerHTML = "El rango debe ser mayor <br>";
+            jus.setAttribute("style", "background-color:red");
+            //console.log('hay error')
+            rangoT.status = false;
+          } else {
+            spanErr.innerHTML = "";
+            //console.log('no hay error')
+            rangoT.status = true;
+            jus.removeAttribute("style");
+          }
+        });
+      }
+      //Validacion Rango Final
+      async function validarFin(rangoFIn) {
+        console.log(rangoT.inicio);
+        const spanErr = document.querySelector("#erSpan");
+        const jus = document.querySelector("#rangoFinal");
+        if (rangoT.inicio >= rangoFIn) {
+          spanErr.innerHTML = "El rango debe ser mayor al Inicial <br>";
+          jus.setAttribute("style", "background-color:red");
+          rangoT.status = false;
+        } else {
+          spanErr.innerHTML = "";
+          jus.removeAttribute("style");
+          rangoT.status = true;
+        }
+      }
+      const validar = (evento) => {
+        const spanErr = document.querySelector("#erSpan");
+        //console.log(evento.target)
+
+        switch (evento.target.name) {
+          case "rangoInicial":
+            console.log(evento.target.value);
+            rangoT.inicio = evento.target.value;
+
+            validaRango(evento.target.value);
+            break;
+          case "rangoFinal":
+            validarFin(evento.target.value);
+            break;
+          case "text":
+            break;
+        }
+      };
+
+      inputs.forEach((input) => {
+        input.addEventListener("keyup", validar);
+        //input.addEventListener("blur", validar);
+      });
+      formulario.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (rangoT.status) {
+          createTraifa();
+          formulario.reset();
+          myModal.hide();
+        }
+      });
+      formTarifaEdit.addEventListener("submit", (event) => {
+        event.preventDefault();
+        myModalEidt.hide();
+        formTarifaEdit.reset();
+
+      });
+
+      async function obtnerCliente() {
+        const res = await fetch(
+          `http://localhost:3000/api/v1/orden/${local("ordenesID")}`
+        );
+        const data = await res.json();
+        clienteOrd.innerHTML = data.cliente.clienomb;
+      }
+
+
+      //Crear Tarifa
+      async function createTraifa() {
+        try {
+          const rangoInicial = document.getElementById("rangoInicial").value;
+          const conceptos = document.getElementById("conceptual").value;
+          const rangoFinal = document.getElementById("rangoFinal").value;
+          const valor = document.getElementById("valorTarifa").value;
+          const [conceptoID, _] = conceptos.split(" ");
+          console.log(valor);
+          console.log(rangoFinal);
+          console.log(rangoInicial);
+          console.log(local("conceptos"));
+          const dat = {
+            torcCoorid: rangoT.conceptos,
+            tocrrain: rangoInicial,
+            tocrrafi: rangoFinal,
+            tocrvalo: valor,
+          };
+          const res = await fetch(url, {
+            method: "POST", // or 'PUT'
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(dat),
+          });
+          const data = await res.json();
+          console.log(data);
+
+          if (res.status !== 201) {
+            const span = document.getElementById("err");
+            span.innerHTML = `el code es ${res.status} mensaje ${data.message}`;
+          } else {
+            // location.href = `/api/v1/taorcora?concepto=${rangoT.conceptos}`;
+            const response = await fetch(urlAll(id));
+            const daa = await response.json();
+            tabla.innerHTML = crearTabla(daa);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      //OBtener Tarifa
+      async function obtenerTarifa (tocrid){
+        const res = await fetch(urls(tocrid));
+        const data = await res.json();
+        idTarifa.value = data.tocrid;
+        rangoInicialEdit.value = data.tocrrain;
+        rangoFinalEdit.value = data.tocrrafi;
+        valorTarifaEdit.value = data.tocrvalo;
+      }
+
+      //Actulaizar Tarifa
+      async function actualizarCliente(){
+      const actualizarTarifa = {
+        tocrrain:rangoInicialEdit.value,
+        tocrrafi:rangoFinalEdit.value,
+        tocrvalo: valorTarifaEdit.value
+
+      }
+      const res = await fetch(urls( idTarifa.value) ,{
+        method:'PUT',
+        body:JSON.stringify(actualizarTarifa),
+        headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        });
+        const response = await fetch(urlAll(id));
+            const daa = await response.json();
+            tabla.innerHTML = crearTabla(daa);
+    }
+
+
+
+
+      //LocalStorage
+
+      function local(attribute, value = null) {
+        if (value) return sessionStorage.setItem(attribute, value);
+        return sessionStorage.getItem(attribute);
+      }
+
+      obtnerCliente();
+
+    </script>
+  </body>
+</html>

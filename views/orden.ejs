@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.rtl.min.css" integrity="sha384-OXTEbYDqaX2ZY/BOaZV/yFGChYHtrXH2nyXJ372n2Y8abBhrqacCEe+3qhSHtLjy" crossorigin="anonymous">
+  <title>Orden</title>
+</head>
+    <body>
+      <style>
+        html,body{
+          overflow-x: hidden;
+          overflow-y: hidden;
+          color:black;
+          font-family:'Opens Sans',helvetica;
+          height:100%;
+          width:100%;
+          margin: 0px;
+          padding: 0px;
+        }
+      </style>
+      <%- include('partials/navigation') %>
+      <h3 style="text-align: center;" id="titulo">RECURSO</h3>
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="http://localhost:3006/api/v1/unidad?limit=8&&offset=0">1</a></li>
+          <li class="page-item"><a class="page-link" href="http://localhost:3006/api/v1/unidad?limit=11&&offset=9">2</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <br>
+
+
+      <div class="container">
+        <a  style="position:relative;bottom: 40px ;" href="/api/v1/orden/create" class="btn btn-outline-primary" >Create</a>
+        <table style="position: relative;bottom: 55px;" class="table table-hover table-bordered-primary table-striped text-center mt-3 position">
+          <thead class =''>
+            <tr class="bg-primary text-white">
+              <th scope="col" style="line-height: 80px;">ID</th>
+              <th scope="col">Numero de contrato</th>
+              <th  scope="col">Descripcion Corta</th>
+              <th  scope="col" style="width: 190px; line-height:80px ;">Descripcion del objeto</th>
+              <th style="width: 120px; line-height:80px ;" scope="col">Fecha recibo</th>
+              <th scope="col">Nit del cliente</th>
+              <th style="width: 120px; line-height: 80px; " scope="col">Fecha inicio </th>
+              <th style="width: 120px; line-height: 80px;" scope="col">Fecha Final </th>
+              <th scope="col">Valor de Orden</th>
+              <th scope="col" >Valor ejecutado</th>
+              <th scope="col" style="line-height:80px ;">Acciones</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <% orden.forEach((orde)=> {%>
+            <tr>
+              <td><%= orde.ordeid %></td>
+              <td><%= orde.ordenume %></td>
+              <td><%= orde.ordedesc %></td>
+              <td><%= orde.ordeobje %></td>
+              <td><%= orde.ordefere %></td>
+              <td><%= orde.cliente.clienomb %></td>
+              <td><%= orde.ordefein %></td>
+              <td><%= orde.ordefefi %></td>
+              <td><%= orde.ordevato %></td>
+              <td><%= orde.ordeveje %></td>
+
+              <td style="width: 110px;">
+              <a  class="btn btn-outline-info"  href="/api/v1/orden/edit/<%= orde.ordeid %>"><i class="fa-solid fa-pencil"></i></a>
+              <a href="/delete" class="btn btn-outline-danger"><i class="fa-solid fa-trash"></i></a>
+            </td>
+            </tr>
+          <% }) %>
+          </tbody>
+        </table>
+
+
+
+
+      </div>
+      <footer style="background-color: rgb(5, 5, 5); color: white; text-align: center; height: 400%; position: relative; top:210px ;height: 60px; line-height: 60px;">
+        <p>Made In Horbath Technologies - Hecho como el elefante </p>
+
+      </footer>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+      <script src="https://kit.fontawesome.com/aa384fa16a.js" crossorigin="anonymous"></script>
+      <script>
+        const mn = location.pathname.split('/');
+        titulo.innerHTML= `${mn[3]}es`.toUpperCase();
+      </script>
+
+
+
+
+</body>
+</html>
