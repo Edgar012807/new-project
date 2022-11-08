@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.rtl.min.css" integrity="sha384-OXTEbYDqaX2ZY/BOaZV/yFGChYHtrXH2nyXJ372n2Y8abBhrqacCEe+3qhSHtLjy" crossorigin="anonymous">
+
+  <title>Document</title>
+
+</head>
+<body>
+
+
+<br>
+
+    <h2 style="position: relative ; left:40%; margin-top: 10px;">
+      Creacion de Servicio
+    </h2>
+    <div id="contenedorEXT" class="containerExito inactive" style="background-color: greenyellow; text-align: center;margin-top: 40px;"  >
+      <span id="exitSpan" style="color: #1DD270;" >Registro Exitoso</span>
+    </div>
+
+  <div class="container" style=" margin-top: 5%;">
+
+    <form class="row g-3" id="formularioServ" >
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Cliente</label>
+        <select id="inpuClient"  class="form-select" onchange="showOrden()" required>
+          <option hidden>Seleccionar cliente...</option>
+          <% cliente.forEach((clientes)=> {%>
+            <option ><%- `${clientes.clienit} ${clientes.clienomb} ` %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label" >Orden</label>
+        <select id="selectOrden" class="form-select" onchange="showConcept()" required>
+          <option >Escoger un cliente primero ...</option>
+
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Concepto</label>
+        <select id="selectConcepto" class="form-select" required>
+          <option selected>Escoge la Orden primero...</option>
+          <option>...</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Recurso</label>
+        <select id="selectRecurso" class="form-select" required>
+          <option selected>Escoge un recurso...</option>
+          <% recurso.forEach((recursos)=> {%>
+            <option ><%=`${recursos.recucodi} ${recursos.recunomb} ` %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="inputState" class="form-label">Modaliad</label>
+        <select id="selectModalidad" class="form-select" required>
+          <option hidden>Selecione la Modalidad...</option>
+          <option>N-NOMINA</option>
+          <option> U-NUBE</option>
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="inputCity" class="form-label">Cantidad</label>
+        <input type="number" name="inputCantidad" id="inputCantidad" class="form-control" aria-label="Amount (to the nearest dollar)"  placeholder="Ingresar cantidad" required>
+      </div>
+<!--       <div class="input-group md-9" style="width: 50%; height: 10px;margin-top: 50px;">
+        <label for="inputCity" class="form-label">Cantidad</label>
+        <span class="input-group-text">$</span>
+        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <span class="input-group-text">.00</span>
+      </div> -->
+      <style>
+        .inactive{
+
+          display: none;
+        }
+      </style>
+      <div class="col-md-4">
+
+        <label for="inputDate" class="form-label ">Fecha</label>
+        <input type="date" name="inputZip"  class="form-control" id="inputZip" required>
+        <span id="fechaError" class="inactive" style="color: red;">Error la fecha no puede ser Posterior a hoy</span>
+      </div>
+
+      <div class="col-12">
+        <a  class="btn btn-primary pos" style="position: relative; left: 85px; width: 10%;" href="/api/v1/servicio" >
+          Cancelar</a>
+        <button  class="btn btn-primary pos" type="submit" style="position: relative; left: 45%; width: 10%;" >
+         Guardar</button>
+
+      </div>
+    </form>
+
+  </div>
+
+
+  <script>
+       const formulario = document.getElementById('formularioServ');
+       const inputs = document.querySelectorAll('#formularioServ input')
+       campos = {
+        fecha:false,
+        cantidad:false,
+
+       }
+
+       const validarForm = (e)=>{
+        switch(e.target.name){
+          case "inputCantidad":
+            console.log(e.target.value);
+              if(e.target.value == ''){
+                console.log('error la e no es un numero')
+              }
+            break;
+          case "inputZip":
+          const fecha = document.getElementById('inputZip').value;
+            const hoy = new Date();
+             if(Date.parse(fecha) > Date.parse(hoy)){
+              fechaError.classList.remove('inactive');
+              campos.fecha=false;
+            }else{
+              fechaError.classList.add('inactive');
+              campos.fecha=true;
+            }
+          break;
+       }
+      }
+
+       inputs.forEach((input)=>{
+          input.addEventListener('keyup',validarForm);
+          input.addEventListener('blur',validarForm);
+       });
+       formulario.addEventListener('submit',(event)=>{
+        event.preventDefault();
+
+        if(campos.fecha){
+
+          createServices();
+          formulario.reset();
+        }
+
+
+       })
+          async function showOrden(){
+          const ordenes = document.getElementById('selectOrden');
+          const selectOrden = document.getElementById('inpuClient');
+          const provinciaSeleccionada = selectOrden.value;
+          const [id , _ ] = provinciaSeleccionada.split(' ')
+          //`http://localhost:3009/api/v1/orden/conceptos/${id}` lista de ordenes
+          const response =  await fetch(`http://localhost:3009/api/v1/orden/concept/${id}`);
+          const data = await response.json();
+          ordenes.innerHTML = '<option value="">Seleccione una Orden...</option>'
+          if(provinciaSeleccionada !== ''){
+            data.forEach(element => {
+              let opcion = document.createElement('option')
+            opcion.value =`${element.ordeid} ${element.ordedesc} `;
+            opcion.text = `${element.ordeid} ${element.ordedesc} `;
+            ordenes.add(opcion);
+            });
+
+        }
+      }
+      async function showConcept(){
+          const conceptos = document.getElementById('selectConcepto');
+          const selectOrden = document.getElementById('selectOrden');
+          var provinciaSeleccionada = selectOrden.value;
+          console.log(selectOrden);
+           const [id , _ ] = provinciaSeleccionada.split(' ')
+          const response =  await fetch(`http://localhost:3009/api/v1/vitacora/conceptos/${id}`);
+          const data = await response.json();
+          conceptos.innerHTML = '<option value="">Seleccione un Concepto...</option>'
+          if(provinciaSeleccionada !== ''){
+            data.forEach(function(element){
+             let opcion = document.createElement('option')
+            opcion.value =`${element.coorid} ${element.coordesc} `
+            opcion.text = `${element.coorid} ${element.coordesc} `
+            local("unidad",element.coorUnidid);
+            conceptos.add(opcion)
+            });
+          }
+
+
+        }
+
+        async function createServices(){
+
+          const url = 'http://localhost:3009/api/v1/servicio';
+          const fechaError = document.getElementById('fechaError')
+          const cliente1 = document.getElementById('inpuClient').value;
+          const cantidad =  document.getElementById('inputCantidad').value;
+          const fecha = document.getElementById('inputZip').value;
+          const selectOrden1 = document.getElementById('selectOrden').value;
+          const selectConcepto1 = document.getElementById('selectConcepto').value;
+          const selectRecurso1 = document.getElementById('selectRecurso').value;
+          const selectMovilidad1 = document.getElementById('selectModalidad').value;
+          const [cliente,] = cliente1.split(' ');
+          const [selectOrden,] = selectOrden1.split(' ');
+           const [selectConcepto,] = selectConcepto1.split(' ');
+          const [selectRecurso,] = selectRecurso1.split(' ');
+          const [selectMovilidad,] = selectMovilidad1.split('-');
+          const [anno,mes] = fecha.split('-');
+
+
+          console.log(local('unidad'));
+          servicios = {
+            clienClienit:cliente,
+            ordenOrdeid:selectOrden,
+            conCoorid:selectConcepto,
+            uniUnidid:local('unidad'),
+            servfech:fecha,
+            servano:anno,
+            servmes:mes,
+            recuRecucodi:selectRecurso,
+            servcant:cantidad,
+            servmoda:selectMovilidad
+          }
+          const response = await fetch(url,{
+            method:'POST',
+            headers:{
+              'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(servicios)
+          })
+          const data = await response.json();
+          if (response.status !== 201){
+            const registroExitoso = document.getElementById('contenedorEXT');
+            registroExitoso.classList.remove('inactive')
+            registroExitoso.innerHTML=`el code es ${response.status} mensaje ${data.message}`
+
+          }else{
+            const registroExitoso = document.getElementById('contenedorEXT');
+
+            registroExitoso.classList.remove('inactive')
+            setTimeout(() => {
+              registroExitoso.classList.add('inactive')
+            }, 2000);
+          }
+
+
+
+
+
+        }
+
+
+
+
+        function local(attribute,value=null){
+                if(value)
+                    return sessionStorage.setItem(attribute,value);
+                return sessionStorage.getItem(attribute);
+          }
+
+
+</script>
+</body>
+</html>
